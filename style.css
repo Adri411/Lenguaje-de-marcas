@@ -1,0 +1,14 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr,td {
+    border: solid;
+    text-align: center;
+}
+
+th {
+    border: solid;
+    background-color: blanchedalmond
+}
