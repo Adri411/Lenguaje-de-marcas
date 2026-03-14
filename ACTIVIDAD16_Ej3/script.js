@@ -28,3 +28,25 @@ async function fetchRate(baseCurrency) {
     cache[baseCurrency] = { rates: data.rates };
     return data.rates;
 }
+
+/* Actualizar opciones del select de películas */
+function updateMovieSelect(rate, coin) {
+    const options = movieSelect.querySelectorAll('option');
+    const names = [
+        'Avengers: Endgame',
+        'Jocker',
+        'Toy Story 4',
+        'The Lion King'
+    ];
+    options.forEach((opt, i) => {
+        const convertedPrice = (BASE_PRICES[i] * rate).toFixed(2);
+        opt.value = convertedPrice;
+        opt.textContent = `${names[i]} (${convertedPrice} ${coin})`;
+    });
+}
+
+/* guardar pelicula en localstorage */
+function setMovieData(movieIndex, moviePrice) {
+    localStorage.setItem('selectedMovieIndex', movieIndex);
+    localStorage.setItem('selectedMoviePrice', moviePrice);
+}
