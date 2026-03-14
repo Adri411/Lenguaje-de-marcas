@@ -82,6 +82,36 @@ function populateUI() {
     }
 }
 
+/* Click en asiento */
+container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+        e.target.classList.toggle('selected');
+        updateSelectedCount();
+    }
+});
+
+/* Cambio de película */
+movieSelect.addEventListener('change', updateSelectedCount);
+
+/* Cambio de moneda */
+currencySelect.addEventListener('change', async () => {
+    const coin = currencySelect.value;
+    cargando.style.display = 'block';
+
+    try {
+        const rates = await fetchRate('USD');
+        currentRate = rates[coin];
+        currentCoin = coin;
+
+        updateMovieSelect(currentRate, currentCoin);
+        updateSelectedCount();
+    } catch (err) {
+        console.error('Error al obtener tipo de cambio:', err);
+    } finally {
+        cargando.style.display = 'none';
+    }
+});
+
 /* Carga inicial */
 populateUI();
 updateSelectedCount();
