@@ -50,3 +50,38 @@ function setMovieData(movieIndex, moviePrice) {
     localStorage.setItem('selectedMovieIndex', movieIndex);
     localStorage.setItem('selectedMoviePrice', moviePrice);
 }
+
+/* Actualizar contador y total*/
+function updateSelectedCount() {
+    const selectedSeats = document.querySelectorAll('.row .seat.selected');
+    const count = selectedSeats.length;
+    const price = parseFloat(movieSelect.value);
+    const total = (count * price).toFixed(2);
+
+    countEl.textContent = count;
+    totalEl.textContent = total;
+    coinEl.textContent  = currentCoin;
+
+    // Guardar índices de asientos seleccionados
+    const allSeats = document.querySelectorAll('.row .seat');
+    const selectedIndexes = [...selectedSeats].map(seat =>
+        [...allSeats].indexOf(seat)
+    );
+    localStorage.setItem('selectedSeats', JSON.stringify(selectedIndexes));
+
+}
+
+/* Restaurar estado desde localStorage */
+function populateUI() {
+    const savedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+    if (savedSeats && savedSeats.length > 0) {
+        const allSeats = document.querySelectorAll('.row .seat');
+        allSeats.forEach((seat, i) => {
+            if (savedSeats.includes(i)) seat.classList.add('selected');
+        });
+    }
+}
+
+/* Carga inicial */
+populateUI();
+updateSelectedCount();
