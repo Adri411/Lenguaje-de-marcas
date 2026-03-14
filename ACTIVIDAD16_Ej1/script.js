@@ -56,3 +56,37 @@ function checkPasswordsMatch(password, confirmPassword) {
     return true;
 }
 
+function checkAge(input) {
+    if (input.value.trim() == '') {
+        showError(input, 'Age is required');
+        return false;
+    }
+
+    const age = Number(input.value);
+
+    if (age < 0) {
+        showError(input, 'Age must be 0 or greater');
+        return false;
+    }
+
+    if (age >= 999) {
+        showError(input, 'Age must be less than 999');
+        return false;
+    }
+
+    showSuccess(input);
+    return true;
+}
+
+function checkURL(input) {
+    const re = /^([a-zA-Z][a-zA-Z0-9+\-.]*:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)*$/;
+
+    if (!re.test(input.value.trim())) {
+        showError(input, 'URL is not valid');
+        return false;
+    } else {
+        showSuccess(input);
+        return true;
+    }
+}
+
