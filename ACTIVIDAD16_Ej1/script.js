@@ -17,3 +17,28 @@ function showError(input, message) {
     small.innerText = message;
 }
 
+function checkRequired(inputArr) {
+  inputArr.forEach(function(input) {
+    if (input.value.trim() == '') {
+      showError(input, `${getFieldName(input)} is required`);
+    } else {
+      showSuccess(input);
+    }
+  });
+}
+
+function getFieldName(input) {
+    return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
+function checkLength(input, min, max) {
+    if (input.value.length < min) {
+        showError(input, `${getFieldName(input)} must be at least ${min} characters`);
+        return false;
+    } else if (input.value.length > max) {
+        showError(input, `${getFieldName(input)} must be less than ${max} characters`);
+        return false;
+    }
+    return true;
+}
+
