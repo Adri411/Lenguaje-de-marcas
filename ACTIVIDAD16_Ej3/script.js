@@ -16,3 +16,15 @@ let currentCoin = 'USD';
 
 /* Caché de tipos de cambio */
 const cache = {};
+
+async function fetchRate(baseCurrency) {
+    
+    if (cache[baseCurrency]) {
+        return cache[baseCurrency].rates;
+    }
+    const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${baseCurrency}`);
+    if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
+    const data = await res.json();
+    cache[baseCurrency] = { rates: data.rates };
+    return data.rates;
+}
