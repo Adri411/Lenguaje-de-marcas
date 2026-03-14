@@ -90,3 +90,16 @@ function checkURL(input) {
     }
 }
 
+const form = document.getElementById('form');
+
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+
+checkRequired([username, email, password, confirmpassword, age, personalurl])
+checkLength(username, 3, 15)
+checkLength(password, 6, 25)
+checkPasswordsMatch(password,confirmpassword)
+checkAge(age)
+checkURL(personalurl)
+});
