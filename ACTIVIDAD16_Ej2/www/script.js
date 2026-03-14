@@ -81,6 +81,52 @@ async function calculate() {
     }
 }
 
+/* event listener */
+currencyEl_one.addEventListener('change', calculate);
+currencyEl_two.addEventListener('change', calculate);
+
+amountEl_one.addEventListener('input', () => {
+    if (validateAmount(amountEl_one)) calculate();
+});
+
+amountEl_two.addEventListener('input', async () => {
+    if (!validateAmount(amountEl_two)) return;
+
+    const currency1 = currencyEl_one.value;
+    const currency2 = currencyEl_two.value;
+
+    hideApiError();
+    showLoading();
+
+    try {
+        const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency2}`);
+        if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
+
+        const data = await res.json();
+        const rate = data.rates[currency1];
+
+        if (rate == undefined) throw new Error(`No se encontró la divisa ${currency1}`);
+
+        const value2 = parseFloat(amountEl_two.value);
+        amountEl_one.value = (value2 * rate).toFixed(2);
+
+    } catch (err) {
+        showApiError(`Error al consultar la API: ${err.message}`);
+    } finally {
+        hideLoading();
+    }
+});
+
+swap.addEventListener('click', () => {
+    const temp = currencyEl_one.value;
+
+    currencyEl_one.value = currencyEl_two.value;
+    currencyEl_two.value = temp;
+
+    calculate();
+});
+
+errorClose.addEventListener('click', hideApiError);
 
 // ── Carga inicial ─────────────────────────────────────────────────────────────
 calculate();
